@@ -23,7 +23,7 @@ app.post('/submit', async (req, res) => {
     const { ip, questionId, answer } = req.body;
 
     try {
-        const response = await axios.post('https://script.google.com/macros/s/AKfycbwHgbCmC2n1MEcWJymE-YY03_jX4nY5qLaxBptXDLveJfdhkiRf3CSqEnkRbCONNmjN/exec', {
+        const response = await axios.post('https://script.google.com/macros/s/AKfycbxtnK_WX4QCML_013_g2YHJgHutjld_fO5bD7ui-y5uR-mqH4x4Bqb8NaamZsR8x4Dh/exec', {
             ip,
             questionId,
             answer,
