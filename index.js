@@ -1,7 +1,6 @@
 // server.js
 const express = require('express');
 const cors = require('cors');
-const path = require('path');
 const axios = require('axios');
 
 const app = express();
@@ -16,10 +15,11 @@ app.use(express.json());
 
 // Endpoint для отправки данных на Google Apps Script
 app.post('/submit', async (req, res) => {
-    const { questionId, answer } = req.body;
+    const { ip, questionId, answer } = req.body;
 
     try {
         const response = await axios.post('https://script.google.com/macros/s/AKfycbxtnK_WX4QCML_013_g2YHJgHutjld_fO5bD7ui-y5uR-mqH4x4Bqb8NaamZsR8x4Dh/exec', {
+            ip,
             questionId,
             answer,
         }, {
@@ -32,7 +32,7 @@ app.post('/submit', async (req, res) => {
         res.status(response.status).json(response.data);
     } catch (error) {
         console.error('Error submitting data:', error.message);
-        res.status(500).json({ message: 'Failed to submit the data' });
+        res.status(500).json({ message: 'Ошибка отправки данных. Проверьте своё интернет-соединение' });
     }
 });
 
