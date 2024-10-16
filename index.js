@@ -3,12 +3,29 @@ const express = require('express');
 const cors = require('cors');
 const axios = require('axios');
 const path = require('path');
+const fs = require('fs');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-app.use(express.static(path.join(__dirname, 'dist')));
+const questionsFilePath = path.join(__dirname, 'questions.json');
 
+app.get('/api/questions', (req, res) => {
+  const data = JSON.parse(fs.readFileSync(questionsFilePath));
+  res.json(data);
+});
+
+app.post('/api/new_questions', (req, res) => {
+  const newQuestion = req.body;
+  const questions = readQuestions();
+  const newId = questions.length > 0 ? Math.max(...questions.map(q => q.id)) + 1 : 1;
+  newQuestion.id = newId;
+  questions.push(newQuestion);
+  fs.writeFileSync(questionsFilePath, JSON.stringify(questions, null, 2));
+  res.status(201).json(newQuestion);
+});
+
+app.use(express.static(path.join(__dirname, 'dist')));
 app.use(cors());
 app.use(express.json());
 
