@@ -7,19 +7,17 @@ const path = require('path')
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Обслуживаем статические файлы из папки 'dist' (или папки с вашим фронтендом)
 app.use(express.static(path.join(__dirname, 'dist')));
 
 // Middleware
 app.use(cors());
 app.use(express.json());
 
-// Endpoint для отправки данных на Google Apps Script
 app.post('/submit', async (req, res) => {
     const { ip, questionId, answer } = req.body;
 
     try {
-        const response = await axios.post('https://script.google.com/macros/s/AKfycbxtnK_WX4QCML_013_g2YHJgHutjld_fO5bD7ui-y5uR-mqH4x4Bqb8NaamZsR8x4Dh/exec', {
+        const response = await axios.post('https://script.google.com/macros/s/AKfycbwHgbCmC2n1MEcWJymE-YY03_jX4nY5qLaxBptXDLveJfdhkiRf3CSqEnkRbCONNmjN/exec', {
             ip,
             questionId,
             answer,
@@ -28,8 +26,6 @@ app.post('/submit', async (req, res) => {
                 'Content-Type': 'application/json',
             },
         });
-
-        // Отправляем ответ обратно на клиент
         res.status(response.status).json(response.data);
     } catch (error) {
         console.error('Error submitting data:', error.message);
