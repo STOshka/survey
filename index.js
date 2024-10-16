@@ -10,9 +10,14 @@ const PORT = process.env.PORT || 3000;
 
 const questionsFilePath = path.join(__dirname, 'questions.json');
 
+const readQuestions = () => {
+    const data = fs.readFileSync(questionsFilePath);
+    return JSON.parse(data);
+  };
+
 app.get('/api/questions', (req, res) => {
-  const data = JSON.parse(fs.readFileSync(questionsFilePath));
-  res.json(data);
+  const questions = readQuestions();
+  res.json(questions);
 });
 
 app.post('/api/new_questions', (req, res) => {
