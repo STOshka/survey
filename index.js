@@ -12,13 +12,6 @@ app.use(express.static(path.join(__dirname, 'dist')));
 app.use(cors());
 app.use(express.json());
 
-const questionsFilePath = path.join(__dirname, 'questions.json');
-
-app.get('/api/questions', (req, res) => {
-    const data = fs.readFileSync(questionsFilePath);
-  res.json(JSON.parse(data));
-});
-
 app.post('/submit', async (req, res) => {
     const { ip, questionId, answer } = req.body;
 
