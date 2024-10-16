@@ -2,16 +2,22 @@
 const express = require('express');
 const cors = require('cors');
 const axios = require('axios');
-const path = require('path')
+const path = require('path');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
 app.use(express.static(path.join(__dirname, 'dist')));
 
-// Middleware
 app.use(cors());
 app.use(express.json());
+
+const questionsFilePath = path.join(__dirname, 'questions.json');
+
+app.get('/api/questions', (req, res) => {
+    const data = fs.readFileSync(questionsFilePath);
+  res.json(JSON.parse(data));
+});
 
 app.post('/submit', async (req, res) => {
     const { ip, questionId, answer } = req.body;
@@ -33,7 +39,6 @@ app.post('/submit', async (req, res) => {
     }
 });
 
-// Запускаем сервер
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 });
